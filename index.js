@@ -2,16 +2,16 @@ const { Client, GatewayIntentBits, ActionRowBuilder, ButtonBuilder, ButtonStyle 
 
 const customResponses = [
     {
-        message: "مرحبًا",  
-        response: "مرحبًا بك في السيرفر! كيف يمكنني مساعدتك اليوم؟"
+        message: "الرساله_الي_تحددها",  
+        response: "الرد"
     },
     {
-        message: "مساعدة",
-        response: "إذا كنت بحاجة إلى مساعدة، يمكنك زيارة السيرفر عبر الرابط التالي."
+        message: "الرساله_الي_تحددها",
+        response: "الرد"
     },
     {
-        message: "كيف الحال؟",
-        response: "أنا بخير، شكرًا لسؤالك! كيف يمكنني مساعدتك؟"
+        message: "الرساله_الي_تحددها",
+        response: "الرد"
     }
 ];
 
@@ -30,7 +30,10 @@ client.on('messageCreate', async (message) => {
 
     if (message.channel.type === 'DM') {
         const customResponse = customResponses.find(response => message.content.includes(response.message));
-        const replyMessage = customResponse ? customResponse.response : "مرحبًا! كيف يمكنني مساعدتك؟";
+        
+        const replyMessage = customResponse 
+            ? customResponse.response 
+            : "مرحبًا! كيف يمكنني مساعدتك؟";
 
         const row = new ActionRowBuilder().addComponents(
             new ButtonBuilder()
@@ -39,11 +42,15 @@ client.on('messageCreate', async (message) => {
                 .setURL(serverLink)
         );
 
-        await message.author.send({
-            content: replyMessage,
-            components: [row]
-        });
+        try {
+            await message.author.send({
+                content: replyMessage,
+                components: [row]
+            });
+        } catch (error) {
+            console.error("Error sending DM:", error);
+        }
     }
 });
 
-client.login('توكن_البوت');  //غير توكن البوت هنااااا  
+client.login('توكن_البوت');
